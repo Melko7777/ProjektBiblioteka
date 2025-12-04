@@ -1,1 +1,0 @@
-print("to jest test")

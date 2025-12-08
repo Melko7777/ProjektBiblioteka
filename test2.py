@@ -1,5 +1,16 @@
 from tkinter import *
 from tkinter import messagebox
+import sqlite3 as db
+conn = db.connect("ksiegarnia.db")
+cur = conn.cursor()
+
+# # https://www.geeksforgeeks.org/python/hashing-passwords-in-python-with-bcrypt
+# # pip install bcrypt
+# def zaszyfrujHaslo(haslo):
+#     bajty = haslo.encode('utf-8')
+#     salt = bcrypt.gensalt()
+#     hash = bcrypt.hashpw(bajty, salt)
+#     return hash
 
 def zaloguj_sie():
     messagebox.showinfo("Udalo sie!", "Pomyslnie zalogowano!")
@@ -12,45 +23,143 @@ def pokaz_haslo():
     entry_haslo.config(show="")
     pokaz_haslo_button.config(text="Nie pokazuj", command=nie_pokazuj_hasla)
 
-def klik():
-    print("Tutaj zmieni na rejestracje")
+def stworz_konto():
+    print("x")
+
+def zmien_na_rejestracje():
+    entry_login.delete(0, END)
+    entry_haslo.delete(0, END)
+
+    tekst_zaloguj.grid_forget()
+    tekst_rejestracja.grid(row=0, padx=5, pady=5)
+
+    tekst_login.grid_forget()
+    tekst_login_reje.grid(row=1, padx=5, pady=5)
+    
+    entry_login.grid_forget()
+    entry_login_reje.grid(row=2, padx=5, pady=5)
+
+    tekst_haslo.grid_forget()
+    tekst_haslo_reje.grid(row=3, padx=5, pady=5)
+
+    entry_haslo.grid_forget()
+    entry_haslo_reje.grid(row=4, padx=5, pady=5)
+
+    pokaz_haslo_button.grid_forget()
+
+    tekst_powtorz_haslo.grid(row=5, padx=5, pady=5)
+    entry_powtorz_haslo_reje.grid(row=6, padx=15, pady=5)
+
+    zaloguj.config(text=f"Stwórz Konto", command=stworz_konto)
+    tekst_rejestracja_1.config(text=f"Jeśli masz konto")
+    rejestracja.config(text=f"Zaloguj sie")
+    rejestracja.bind("<Button-1>", lambda event:zmien_na_logowanie())
+
+def zmien_na_logowanie():
+    entry_login_reje.delete(0, END)
+    entry_haslo_reje.delete(0, END)
+    entry_powtorz_haslo_reje.delete(0, END)
+
+    tekst_zaloguj.grid(row=0, padx=5, pady=5)
+    tekst_rejestracja.grid_forget()
+
+    tekst_login.grid(row=1, padx=5, pady=5)
+    tekst_login_reje.grid_forget()
+    
+    entry_login.grid(row=2, padx=5, pady=5)
+    entry_login_reje.grid_forget()
+
+    tekst_haslo.grid(row=3, padx=5, pady=5)
+    tekst_haslo_reje.grid_forget()
+
+    entry_haslo.grid(row=4, padx=5, pady=5)
+    entry_haslo_reje.grid_forget()
+
+    pokaz_haslo_button.grid(row=5, padx=5, pady=5)
+
+    tekst_powtorz_haslo.grid_forget()
+    entry_powtorz_haslo_reje.grid_forget()
+
+    zaloguj.config(text=f"Zaloguj", command=zaloguj_sie)
+    tekst_rejestracja_1.config(text=f"Jeśli nie masz konto")
+    rejestracja.config(text=f"Stwórz konto")
+    rejestracja.bind("<Button-1>", lambda event:zmien_na_rejestracje())
 
 okno = Tk()
 
 okno.title("Księgarnia")
 okno.geometry('430x300')
  
+
+# Label zaloguj i Rejestracja
+
 tekst_zaloguj = Label(okno, text="Zaloguj")
 tekst_zaloguj.grid(row=0,padx=5, pady=5)
+
+tekst_rejestracja = Label(okno, text="Rejestracja")
+tekst_rejestracja.grid_forget()
+
+
+
+#Label Login
 
 tekst_login = Label(okno, text="Login: ")
 tekst_login.grid(row=1,padx=5, pady=5)
 
+tekst_login_reje = Label(okno, text="Wpisz Login: ")
+tekst_login_reje.grid_forget()
+
+
+#Entry loginu
+
 entry_login = Entry(okno)
 entry_login.grid(row=2,padx=5, pady=5)
 
+entry_login_reje = Entry(okno)
+entry_login_reje.grid_forget()
+
+
+# Label Haslo
 
 tekst_haslo = Label(okno, text="Hasło: ")
 tekst_haslo.grid(row=3,padx=5, pady=5)
 
+tekst_haslo_reje = Label(okno, text="Wpisz hasło:")
+tekst_haslo_reje.grid_forget()
+
+
+# Entry Haslo
+
 entry_haslo = Entry(okno, show="*")
 entry_haslo.grid(row=4,column=0,padx=5, pady=5)
 
+entry_haslo_reje = Entry(okno, show="*")
+entry_haslo_reje.grid_forget()
+
+
+# Przycisk pokaz haslo
 
 pokaz_haslo_button = Button(okno, text="Pokaz", command=pokaz_haslo)
 pokaz_haslo_button.grid(row=5,padx=15, pady=5) 
 
+# Label i entry powtorz haslo
 
+tekst_powtorz_haslo = Label(okno, text="Powtórz hasło: ")
+tekst_powtorz_haslo.grid_forget()
+
+
+entry_powtorz_haslo_reje = Entry(okno, show="*")
+entry_powtorz_haslo_reje.grid_forget()
 
 zaloguj = Button(okno, text="Zaloguj", command=zaloguj_sie)
-tekst_rejestracja = Label(okno, text=f"Jesli nie masz konta to")
+tekst_rejestracja_1 = Label(okno, text=f"Jesli nie masz konta to")
 rejestracja = Label(okno, text=f"Stwórz Konto", fg='blue', cursor="hand2")
 
-zaloguj.grid(row=6,padx=5, pady=5)
+zaloguj.grid(row=7,padx=5, pady=5)
 
-tekst_rejestracja.grid(row=7)
-rejestracja.grid(row=8)
-rejestracja.bind("<Button-1>",lambda event:klik())
+tekst_rejestracja_1.grid(row=8)
+rejestracja.grid(row=9)
+rejestracja.bind("<Button-1>",lambda event:zmien_na_rejestracje())
 
 okno.grid_columnconfigure(0,weight=1)
 

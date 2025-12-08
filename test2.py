@@ -1,16 +1,7 @@
+from smtplib import bCRLF
 from tkinter import *
+import bcrypt
 from tkinter import messagebox
-import sqlite3 as db
-conn = db.connect("ksiegarnia.db")
-cur = conn.cursor()
-
-# # https://www.geeksforgeeks.org/python/hashing-passwords-in-python-with-bcrypt
-# # pip install bcrypt
-# def zaszyfrujHaslo(haslo):
-#     bajty = haslo.encode('utf-8')
-#     salt = bcrypt.gensalt()
-#     hash = bcrypt.hashpw(bajty, salt)
-#     return hash
 
 def zaloguj_sie():
     messagebox.showinfo("Udalo sie!", "Pomyslnie zalogowano!")
@@ -90,9 +81,6 @@ okno = Tk()
 okno.title("Księgarnia")
 okno.geometry('430x300')
  
-
-# Label zaloguj i Rejestracja
-
 tekst_zaloguj = Label(okno, text="Zaloguj")
 tekst_zaloguj.grid(row=0,padx=5, pady=5)
 
@@ -140,7 +128,7 @@ entry_haslo_reje.grid_forget()
 # Przycisk pokaz haslo
 
 pokaz_haslo_button = Button(okno, text="Pokaz", command=pokaz_haslo)
-pokaz_haslo_button.grid(row=5,padx=15, pady=5) 
+pokaz_haslo_button.grid(row=5,padx=15, pady=5)
 
 # Label i entry powtorz haslo
 

@@ -11,9 +11,9 @@ def zaloguj_sie():
     haslo = entry_haslo.get()
     if login == temp_login and haslo == temp_haslo:
         messagebox.showinfo("Udało się", "Pomyślnie zalogowano")
-    else:
-        messagebox.showerror("...", "Czeka cie męka.")
-        okno.after(1, zaloguj_sie)
+    # else:
+    #     messagebox.showerror("...", "Czeka cie męka.")
+    #     okno.after(1, zaloguj_sie)
 
 def nie_pokazuj_hasla():
     entry_haslo.config(show="*")

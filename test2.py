@@ -40,16 +40,18 @@ def zaloguj_sie():
         if haslo == fetched_haslo:
             messagebox.showinfo(":D","Udało się zalogować")
             okno_uzytkownika = Tk()
-            
-            przycisk_wyswietl_katalog = Button(okno, text=f"Wyświetl Katalog", command=wyswietl_katalog)
+            okno_uzytkownika.geometry("1000x1000")
+
+            przycisk_wyswietl_katalog = Button(okno_uzytkownika, text=f"Wyświetl Katalog", command=wyswietl_katalog)
             przycisk_wyswietl_katalog.grid(row=2, column=1, padx=15, pady=15)
 
-            przycisk_wypozyczania = Button(okno, text=f"Wypożycz" , command=wypozycz) 
+            przycisk_wypozyczania = Button(okno_uzytkownika, text=f"Wypożycz" , command=wypozycz) 
             przycisk_wypozyczania.grid(row=2, column=2, padx=15, pady=15)
 
-            przycisk_zwracania = Button(okno, text=f"Zwróć" , command=zwracanie)
-            przycisk_zwracania.grid(row=2, column=3, padx=15, pady=15) 
-            przycisk_historia_wypozyczen = Button(okno, text=f"Sprawdz Historie", command=historia_wypozyczen)
+            przycisk_zwracania = Button(okno_uzytkownika, text=f"Zwróć" , command=zwracanie)
+            przycisk_zwracania.grid(row=2, column=3, padx=15, pady=15)
+
+            przycisk_historia_wypozyczen = Button(okno_uzytkownika, text=f"Sprawdz Historie", command=historia_wypozyczen)
             przycisk_historia_wypozyczen.grid(row=2, column=3, padx=15, pady=15) 
             
             okno.destroy()

@@ -1,8 +1,13 @@
 from smtplib import bCRLF
 from tkinter import *
+import sqlite3 as db
 #import bcrypt
 import re
 from tkinter import messagebox
+#rzeczy bazodanowe
+conn = db.connect("ksiegarnia.db")
+cur = conn.cursor()
+
 temp_login = str
 temp_haslo = str
 def zaloguj_sie():
@@ -11,9 +16,9 @@ def zaloguj_sie():
     haslo = entry_haslo.get()
     if login == temp_login and haslo == temp_haslo:
         messagebox.showinfo("Udało się", "Pomyślnie zalogowano")
-    # else:
-    #     messagebox.showerror("...", "Czeka cie męka.")    
-    #     okno.after(1, zaloguj_sie)
+    else:
+        messagebox.showerror("...", "Czeka cie męka.")    
+        okno.after(1, zaloguj_sie)
 
 def nie_pokazuj_hasla():
     entry_haslo.config(show="*")
@@ -40,6 +45,8 @@ def stworz_konto():
         messagebox.showinfo("Udało się!", "Konto stworzone pomyślnie.")
         temp_login = login_reje
         temp_haslo = haslo_reje
+        cur.execute("INSERT INTO Uzytkownik(Nazwa, login, haslo, ROLA) VALUES (?,?,?,?)",(login_reje, login_reje, haslo_reje, "Uzytkownik"))
+        conn.commit()
         zmien_na_logowanie()
     
 def zmien_na_rejestracje():

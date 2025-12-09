@@ -8,7 +8,21 @@ from tkinter import messagebox
 conn = db.connect("ksiegarnia.db")
 cur = conn.cursor()
 
+def wyswietl_katalog():
+    # Miłosza robota
+    print('a')
 
+def wypozycz():
+    # miłosza robota
+    print('b')
+
+def zwracanie():
+    # miłosza robota
+    print('c')
+
+def historia_wypozyczen():
+    # miłosza robota
+    print('d')
 
 def zaloguj_sie():
     login = entry_login.get()
@@ -26,7 +40,18 @@ def zaloguj_sie():
         if haslo == fetched_haslo:
             messagebox.showinfo(":D","Udało się zalogować")
             okno_uzytkownika = Tk()
-            label_zalogowany = Label(okno_uzytkownika, text="Tutaj robota bochenka piotra").pack()
+            
+            przycisk_wyswietl_katalog = Button(okno, text=f"Wyświetl Katalog", command=wyswietl_katalog)
+            przycisk_wyswietl_katalog.grid(row=2, column=1, padx=15, pady=15)
+
+            przycisk_wypozyczania = Button(okno, text=f"Wypożycz" , command=wypozycz) 
+            przycisk_wypozyczania.grid(row=2, column=2, padx=15, pady=15)
+
+            przycisk_zwracania = Button(okno, text=f"Zwróć" , command=zwracanie)
+            przycisk_zwracania.grid(row=2, column=3, padx=15, pady=15) 
+            przycisk_historia_wypozyczen = Button(okno, text=f"Sprawdz Historie", command=historia_wypozyczen)
+            przycisk_historia_wypozyczen.grid(row=2, column=3, padx=15, pady=15) 
+            
             okno.destroy()
             okno_uzytkownika.mainloop()
         else:

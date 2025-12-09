@@ -1,19 +1,37 @@
 from smtplib import bCRLF
 from tkinter import *
+import sqlite3 as db
 #import bcrypt
 import re
 from tkinter import messagebox
-temp_login = str
-temp_haslo = str
+#rzeczy bazodanowe
+conn = db.connect("ksiegarnia.db")
+cur = conn.cursor()
+
+
+
 def zaloguj_sie():
-    global temp_haslo, temp_login
     login = entry_login.get()
     haslo = entry_haslo.get()
-    if login == temp_login and haslo == temp_haslo:
-        messagebox.showinfo("Udało się", "Pomyślnie zalogowano")
-    # else:
-    #     messagebox.showerror("...", "Czeka cie męka.")    
-    #     okno.after(1, zaloguj_sie)
+    if login == "" or haslo == "":
+        messagebox.showerror("BŁAD", "Prosze wypełnić wszystkie pola")
+        return
+    cur.execute("SELECT haslo FROM Uzytkownik WHERE login = ?", (login,))
+    wynik = cur.fetchone()
+
+    if wynik is None:
+        messagebox.showerror("Błąd", "Nie ma takiego użytkownika")
+    else:
+        fetched_haslo = wynik[0]
+        if haslo == fetched_haslo:
+            messagebox.showinfo(":D","Udało się zalogować")
+            okno_uzytkownika = Tk()
+            label_zalogowany = Label(okno_uzytkownika, text="Tutaj robota bochenka piotra").pack()
+            okno.destroy()
+            okno_uzytkownika.mainloop()
+        else:
+            messagebox.showerror(">:C", "Nie udało się zalogować")
+
 
 def nie_pokazuj_hasla():
     entry_haslo.config(show="*")
@@ -24,7 +42,6 @@ def pokaz_haslo():
     pokaz_haslo_button.config(text="Nie pokazuj", command=nie_pokazuj_hasla)
 
 def stworz_konto():
-    global temp_login, temp_haslo
     login_reje = entry_login_reje.get()
     haslo_reje = entry_haslo_reje.get()
     p_haslo_reje = entry_powtorz_haslo_reje.get()
@@ -38,8 +55,8 @@ def stworz_konto():
         messagebox.showerror("Error", "Hasła nie są takie same")
     else:
         messagebox.showinfo("Udało się!", "Konto stworzone pomyślnie.")
-        temp_login = login_reje
-        temp_haslo = haslo_reje
+        cur.execute("INSERT INTO Uzytkownik(Nazwa, login, haslo, ROLA) VALUES (?,?,?,?)",(login_reje, login_reje, haslo_reje, "Uzytkownik"))
+        conn.commit()
         zmien_na_logowanie()
     
 def zmien_na_rejestracje():

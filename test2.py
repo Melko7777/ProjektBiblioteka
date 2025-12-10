@@ -49,6 +49,7 @@ def usun_ksiazke():
     if not chosen:
         messagebox.showerror("Błąd", "Nie zaznaczono żadnej książki do usunięcia!")
         return
+    
     text = lista_ksiazeczek.get(chosen[0])
     try:
         autor, reszta = text.split(" - ", 1)
@@ -56,17 +57,18 @@ def usun_ksiazke():
     except Exception:
         messagebox.showerror("Błąd", "Nie udało się odczytać danych książki.")
         return
+    
     cur.execute("SELECT ID_Ksiazka FROM Ksiazka WHERE Autor = ? AND Tytul = ?", (autor, tytul))
     wynik = cur.fetchone()
-    if wynik is None:
-        messagebox.showerror("Błąd", "Nie znaleziono książki w bazie.")
-        return
+
     id_ksiazki = wynik[0]
     if not messagebox.askyesno("Potwierdzenie", f"Czy na pewno chcesz usunąć książkę:\n{autor} - {tytul}?"):
         return
+    
     cur.execute("DELETE FROM Ksiazka WHERE ID_Ksiazka = ?", (id_ksiazki,))
     conn.commit()
     lista_ksiazeczek.delete(0, END)
+
     cur.execute("SELECT Autor, Tytul, Ilosc_Dostepnych FROM Ksiazka")
     for ksiazka in cur.fetchall():
         autor, tytul, ilosc = ksiazka
@@ -83,6 +85,7 @@ def wyjdz_z_pola_ksiazki():
     autor = autor_entry.get().strip()
     rok_wydania = rok_wydania_entry.get().strip()
     ilosc = ilosc_dostepnych_entry.get().strip()
+
     if not tytul or not autor or not rok_wydania or not ilosc:
         messagebox.showerror("Blad", "Wszystkie pola musza byc wypelnione!")
         return
@@ -104,6 +107,7 @@ def wyjdz_z_pola_ksiazki():
     conn.commit()
     lista_ksiazeczek.delete(0, END)
     cur.execute("SELECT Autor, Tytul, Ilosc_Dostepnych FROM Ksiazka")
+
     for book in cur.fetchall():
         aut, tyt, ilo = book
         lista_ksiazeczek.insert(END, f"{aut} - {tyt} (Dostepnych: {ilo})")
@@ -235,6 +239,7 @@ def zatwierdz_dodanie_uzytkownika():
     messagebox.showinfo("Sukces!", "Użytkownik został dodany pomyślnie!")
     okno_dodaj_uzytkownika.destroy()
 
+
 def dodaj_uzytkownika():
     global okno_dodaj_uzytkownika, login_entry, haslo_entry, rola_var
 
@@ -285,8 +290,11 @@ def zarzadzaj_uzytkownikiem():
     if rola.lower() == "admin":
         messagebox.showerror("Błąd", "Nie można zmodyfikowac innego administratora!")
         return
-    cur.execute("UPDATE Uzytkownik SET Rola = admin WHERE ID_Uzytkownik = ?",(id_user,))
+    cur.execute("UPDATE Uzytkownik SET Rola = 'admin' WHERE ID_Uzytkownik = ?",(id_user,))
+    conn.commit()
 
+    cur.execute("SELECT * FROM Uzytkownik")
+    lista_uzytkownikow.delete(0, END)
     for uzyt in cur.fetchall():
         id_, login_, haslo_, rola_ = uzyt
         lista_uzytkownikow.insert(END, f"{id_} - {login_}, {haslo_}, {rola_}")
@@ -476,7 +484,7 @@ def zaloguj_sie():
                 okno_admina.geometry("1400x600")
                 
                 przycisk_zarzadzaj_uzo = Button(okno_admina, text=f"Zarzadzaj uzytkownikiem", command=zarzadzaj_uzytkownikiem)
-                przycisk_zarzadzaj_uzo.grid(row=1, column=4, padx=15, pady=15)
+                przycisk_zarzadzaj_uzo.grid(row=1, column=0, padx=15, pady=15)
 
                 labelka_ksiazeczek = Label(okno_admina, text="Lista ksiazek")
                 labelka_ksiazeczek.grid(row=2, column=1, columnspan=3, pady=10)

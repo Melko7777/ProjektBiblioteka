@@ -267,7 +267,31 @@ def dodaj_uzytkownika():
 
     okno_dodaj_uzytkownika.mainloop()
 
- 
+def zarzadzaj_uzytkownikiem():
+    global lista_uzytkownikow
+    chosen = lista_uzytkownikow.curselection()
+    if not chosen:
+        messagebox.showerror("Błąd", "Nie zaznaczono żadnego użytkownika do zarzadzania!")
+        return
+    
+    tekst = lista_uzytkownikow.get(chosen[0])
+    try:
+        id_str, reszta = tekst.split(" - ", 1)
+        rola = reszta.split(",")[-1].strip()
+        id_user = int(id_str)
+    except:
+        messagebox.showerror("Błąd", "Nie udało się odczytać danych użytkownika.")
+        return
+    if rola.lower() == "admin":
+        messagebox.showerror("Błąd", "Nie można zmodyfikowac innego administratora!")
+        return
+    cur.execute("UPDATE Uzytkownik SET Rola = admin WHERE ID_Uzytkownik = ?",(id_user,))
+
+    for uzyt in cur.fetchall():
+        id_, login_, haslo_, rola_ = uzyt
+        lista_uzytkownikow.insert(END, f"{id_} - {login_}, {haslo_}, {rola_}")
+
+    messagebox.showinfo("Sukces", "Użytkownik został zmodyfikowany")
 
 def sprawdz_termin():
     global wypozyczenia
@@ -450,6 +474,9 @@ def zaloguj_sie():
                 messagebox.showinfo("Witamy serdecznie", "Witam Adminie :D")
                 okno_admina = Tk()
                 okno_admina.geometry("1400x600")
+                
+                przycisk_zarzadzaj_uzo = Button(okno_admina, text=f"Zarzadzaj uzytkownikiem", command=zarzadzaj_uzytkownikiem)
+                przycisk_zarzadzaj_uzo.grid(row=1, column=4, padx=15, pady=15)
 
                 labelka_ksiazeczek = Label(okno_admina, text="Lista ksiazek")
                 labelka_ksiazeczek.grid(row=2, column=1, columnspan=3, pady=10)

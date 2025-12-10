@@ -180,37 +180,42 @@ def zaloguj_sie():
             current_user_id = uzytkownik_id
             if cur.fetchone()[1] == "Admin":
                 okno_admina = Tk()
+                okno_admina.geometry("1200x600")
+
+                przycisk_sprawdz_wypozyczone = Button(okno_admina, text=f"Wyswietl Wypozyczone Ksiazki", command=wyswietl_wypozyczone)
+                przycisk_sprawdz_wypozyczone.grid(row=2, column=1, padx=15, pady=15)
+                
+
+                przycisk_dodaj_ksiazke = Button(okno_admina, text=f"Dodaj Ksiazke", command=dodaj_ksiazke)
+                przycisk_dodaj_ksiazke.grid(row=2, column=2, padx=15, pady=15)
+
+
+                przycisk_usun_ksiazke = Button(okno_admina, text=f"Usun Ksiazke", command=usun_ksiazke)
+                przycisk_usun_ksiazke.grid(row=2, column=3, padx=15, pady=15)
+                
+
+                przycisk_dodaj_uzo = Button(okno_admina, text=f"Dodaj Uzytkownika", command=dodaj_uzytkownika)
+                przycisk_dodaj_uzo.grid(row=2, column=4, padx=15, pady=15)
+                
+                
+                przycisk_usun_uzo = Button(okno_admina, text=f"Usun Uzytkownika", command=usun_uzytkownika)
+                przycisk_usun_uzo.grid(row=2, column=5, padx=15, pady=15)
+
+
+                przycisk_sprawdz_termin = Button(okno_admina, text=f"Sprawdz Termin Zwrotu", command=sprawdz_termin)
+                przycisk_sprawdz_termin.grid(row=2, column=6, padx=15, pady=15)
+               
+                
+                przycisk_wyslij_powiadomienie = Button(okno_admina, text=f"Wyslij Powiadomienie", command=wyslij_powiadomienie)
+                przycisk_wyslij_powiadomienie.grid(row=3, column=6, padx=15, pady=15)
+                
+
                 okno_admina.mainloop()
+            
             elif cur.fetchone()[1] == "Uzytkownik":
                 okno_uzytkownika = Tk()
                 okno_uzytkownika.geometry("1200x600")
-                # # Administrator dokonczy sie pozniej jak bedzie dzialajacy administrator
                 
-                # przycisk_sprawdz_wypozyczone = Button(okno_uzytkownika, text=f"Wyswietl Wypozyczone Ksiazki", command=wysietl_wypozyczone)
-                # przycisk_sprawdz_wypozyczone.grid(row=2, column=1, padx=15, pady=15)
-                
-                # przycisk_dodaj_ksiazke = Button(okno_uzytkownika, text=f"Dodaj Ksiazke", command=dodaj_ksiazke)
-                # przycisk_dodaj_ksiazke.grid(row=2, column=2, padx=15, pady=15)
-
-                # przycisk_usun_ksiazke = Button(okno_uzytkownika, text=f"Usun Ksiazke", command=usun_ksiazke)
-                # przycisk_usun_ksiazke.grid(row=2, column=3, padx=15, pady=15)
-                
-
-                # przycisk_dodaj_uzo = Button(okno_uzytkownika, text=f"Dodaj Uzytkownika", command=dodaj_uzytkownika)
-                # przycisk_dodaj_uzo.grid(row=2, column=4, padx=15, pady=15)
-                
-                
-                # przycisk_usun_uzo = Button(okno_uzytkownika, text=f"Usun Uzytkownika", command=usun_uzytkownika)
-                # przycisk_usun_uzo.grid(row=2, column=5, padx=15, pady=15)
-                
-                # przycisk_sprawdz_termin = Button(okno_uzytkownika, text=f"Sprawdz Termin Zwrotu", command=sprawdz_termin)
-                # przycisk_sprawdz_termin.grid(row=2, column=6, padx=15, pady=15)
-                
-                # przycisk_wyslij_powiadomienie = Button(okno_uzytkownika, text=f"Wyslij Powiadomienie", command=wyslij_powiadomienie)
-                # przycisk_wyslij_powiadomienie.grid(row=3, column=6, padx=15, pady=15)
-                
-
-                #robie tu katalog
                 labelka = Label(okno_uzytkownika, text="Lista ksiazek")
                 lista_ksiazek = Listbox(okno_uzytkownika, width=60, height=15)
 
@@ -263,6 +268,7 @@ def stworz_konto():
         cur.execute("INSERT INTO Uzytkownik(login, haslo, ROLA) VALUES (?,?,?,?)",(login_reje, haslo_reje, "Uzytkownik"))
         conn.commit()
         zmien_na_logowanie()
+
     
 def zmien_na_rejestracje():
     entry_login.delete(0, END)
@@ -293,6 +299,7 @@ def zmien_na_rejestracje():
     rejestracja.config(text=f"Zaloguj sie")
     rejestracja.bind("<Button-1>", lambda event:zmien_na_logowanie())
 
+
 def zmien_na_logowanie():
     entry_login_reje.delete(0, END)
     entry_haslo_reje.delete(0, END)
@@ -322,6 +329,7 @@ def zmien_na_logowanie():
     tekst_rejestracja_1.config(text=f"Jesli nie masz konto")
     rejestracja.config(text=f"Stworz konto")
     rejestracja.bind("<Button-1>", lambda event:zmien_na_rejestracje())
+
 
 okno = Tk()
 
@@ -386,6 +394,8 @@ tekst_powtorz_haslo.grid_forget()
 
 entry_powtorz_haslo_reje = Entry(okno, show="*")
 entry_powtorz_haslo_reje.grid_forget()
+
+# Reszta rzeczy 
 
 zaloguj = Button(okno, text="Zaloguj", command=zaloguj_sie)
 tekst_rejestracja_1 = Label(okno, text=f"Jesli nie masz konta to")
